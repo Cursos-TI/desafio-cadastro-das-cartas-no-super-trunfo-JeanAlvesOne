@@ -1,0 +1,70 @@
+#include <stdio.h>
+
+
+typedef struct {
+    char estado[3];
+    char codigo[10];
+    char nomeCidade[50];
+    int populacao;
+    float area;
+    float pib;
+    int pontosTuristicos;
+    float densidadePopulacional;
+    float pibPerCapita;
+} Carta;
+
+
+void calcularIndicadores(Carta *carta) {
+    if (carta->area > 0) {
+        carta->densidadePopulacional = carta->populacao / carta->area;
+    } else {
+        carta->densidadePopulacional = 0;
+    }
+
+    if (carta->populacao > 0) {
+        carta->pibPerCapita = carta->pib / carta->populacao;
+    } else {
+        carta->pibPerCapita = 0;
+    }
+}
+
+
+void exibirCarta(Carta carta, int numero) {
+    printf("Carta %d - %s (%s):\n", numero, carta.nomeCidade, carta.estado);
+    printf("  Código: %s\n", carta.codigo);
+    printf("  População: %d habitantes\n", carta.populacao);
+    printf("  Área: %.2f km²\n", carta.area);
+    printf("  PIB: R$ %.2f milhões\n", carta.pib);
+    printf("  Pontos Turísticos: %d\n", carta.pontosTuristicos);
+    printf("  Densidade Populacional: %.2f hab/km²\n", carta.densidadePopulacional);
+    printf("  PIB per capita: R$ %.2f\n", carta.pibPerCapita);
+    printf("\n");
+}
+
+
+int main() {
+    
+    Carta carta1 = {"SP", "C01", "São Paulo", 12300000, 1521.11, 699000.00, 25};
+    Carta carta2 = {"RJ", "C02", "Rio de Janeiro", 6000000, 1182.30, 364000.00, 20};
+
+    calcularIndicadores(&carta1);
+    calcularIndicadores(&carta2);
+
+    printf("=== Cartas Cadastradas ===\n\n");
+    exibirCarta(carta1, 1);
+    exibirCarta(carta2, 2);
+
+    printf("=== Comparação de Cartas (Atributo: População) ===\n\n");
+    printf("Carta 1 - %s: %d habitantes\n", carta1.nomeCidade, carta1.populacao);
+    printf("Carta 2 - %s: %d habitantes\n", carta2.nomeCidade, carta2.populacao);
+
+    if (carta1.populacao > carta2.populacao) {
+        printf("\nResultado: Carta 1 (%s) venceu!\n", carta1.nomeCidade);
+    } else if (carta2.populacao > carta1.populacao) {
+        printf("\nResultado: Carta 2 (%s) venceu!\n", carta2.nomeCidade);
+    } else {
+        printf("\nResultado: Empate!\n");
+    }
+
+    return 0;
+}
